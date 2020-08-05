@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+  minusculas:
+    build: './Minusculas'
+    depends_on:
+      - redis
+    volumes:
+      - ./Minusculas:/code
+    command: python escriba_minus.py
+    environment:
+      PYTHONUNBUFFERED: 1
+      REDIS_HOST: redis
+      
+  convertir:
+    build: './Convertir'
+    depends_on:
+      - redis
+    volumes:
+      - ./Convertir:/code
+    command: python cambia_minus.py
+    environment:
+      PYTHONUNBUFFERED: 1
+      REDIS_HOST: redis
+      
+  mayusculas:
+    build: './Mayusculas'
+    depends_on:
+      - redis
+    volumes:
+      - ./Mayusculas:/code
+    command: python escriba_mayus.py
+    environment:
+      PYTHONUNBUFFERED: 1
+      REDIS_HOST: redis
+      
+  convertirotro:
+    build: './Convertir'
+    depends_on:
+      - redis
+    volumes:
+      - ./Convertir:/code
+    command: python cambia_minus.py
+    environment:
+      PYTHONUNBUFFERED: 1
+      REDIS_HOST: redis
